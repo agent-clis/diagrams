@@ -162,7 +162,7 @@ export interface LayoutResult {
 export interface SatoriElement {
   type: string;
   props: Record<string, unknown> & {
-    children?: SatoriElement | SatoriElement[] | string;
+    children?: SatoriElement | (SatoriElement | string)[] | string;
     style?: Record<string, unknown>;
   };
 }

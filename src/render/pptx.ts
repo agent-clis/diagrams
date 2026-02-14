@@ -17,9 +17,9 @@ function toInches(px: number, scale: number): number {
 }
 
 /** Map our edge style names to pptxgenjs dash types. */
-function dashType(style?: string): 'solid' | 'dash' | 'dot' {
+function dashType(style?: string): 'solid' | 'dash' | 'sysDot' {
   if (style === 'dashed') return 'dash';
-  if (style === 'dotted') return 'dot';
+  if (style === 'dotted') return 'sysDot';
   return 'solid';
 }
 
@@ -220,7 +220,7 @@ export async function renderToPptx(
         color: textColor,
         bold: !isIconVariant,
         align: 'center',
-        breakType: 'none' as unknown as undefined,
+
       },
     });
 
@@ -232,7 +232,7 @@ export async function renderToPptx(
           fontFace: theme.fontFamily,
           color: hex(theme.node.textColorSecondary),
           align: 'center',
-          breakType: 'none' as unknown as undefined,
+  
         },
       });
     }

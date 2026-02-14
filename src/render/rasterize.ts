@@ -9,7 +9,7 @@ export async function renderToSvg(
   height: number,
 ): Promise<string> {
   const fonts = await loadFonts();
-  return await satori(tree as any, { width, height, fonts });
+  return await satori(tree as any, { width, height, fonts: fonts as any });
 }
 
 export async function renderToPng(
