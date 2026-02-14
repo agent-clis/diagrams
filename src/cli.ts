@@ -19,7 +19,7 @@ program
   .description('Render a diagram from a YAML or JSON spec file')
   .argument('<input>', 'Input file path (.yaml, .yml, .json) or "-" for stdin')
   .option('-o, --output <path>', 'Output file path')
-  .option('-f, --format <format>', 'Output format: png, svg, html', 'png')
+  .option('-f, --format <format>', 'Output format: png, svg, html, pptx', 'png')
   .option('-t, --theme <theme>', 'Theme: default, dark', 'default')
   .option('-w, --width <number>', 'Canvas width in pixels')
   .option('-s, --scale <number>', 'Scale factor for PNG output', '2')
@@ -72,7 +72,8 @@ program
       let outputPath = opts.output;
       if (!outputPath) {
         const base = input === '-' ? 'diagram' : basename(input, extname(input));
-        const ext = format === 'png' ? '.png' : format === 'svg' ? '.svg' : '.html';
+        const extMap: Record<string, string> = { png: '.png', svg: '.svg', html: '.html', pptx: '.pptx' };
+        const ext = extMap[format] ?? '.png';
         outputPath = base + ext;
       }
 

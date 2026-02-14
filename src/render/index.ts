@@ -5,6 +5,7 @@ import { resolveIcon } from '../icons.js';
 import { buildTree } from './tree.js';
 import { renderToSvg, renderToPng } from './rasterize.js';
 import { renderToHTML } from './html.js';
+import { renderToPptx } from './pptx.js';
 
 export async function renderDiagram(
   spec: DiagramSpec,
@@ -23,6 +24,11 @@ export async function renderDiagram(
 
   // Layout (handles groups if present, falls back to flat layout otherwise)
   const result = layoutWithGroups(spec, theme, padding);
+
+  // PPTX bypasses the Satori element tree entirely
+  if (format === 'pptx') {
+    return renderToPptx(spec, result, theme);
+  }
 
   // Use specified width or auto-computed width
   const width = options.width ?? result.width;

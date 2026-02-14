@@ -1,6 +1,6 @@
 export type NodeId = string;
 export type Direction = 'TB' | 'LR';
-export type OutputFormat = 'svg' | 'png' | 'html';
+export type OutputFormat = 'svg' | 'png' | 'html' | 'pptx';
 export type NodeShape = 'rectangle' | 'rounded' | 'pill' | 'diamond' | 'circle';
 export type EdgeStyle = 'solid' | 'dashed' | 'dotted';
 export type NodeVariant = 'default' | 'icon';

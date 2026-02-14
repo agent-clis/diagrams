@@ -2,6 +2,7 @@ node_modules/
 dist/
 *.png
 *.svg
+*.pptx
 !fonts/*.svg
 !downloaded_icons/**/*.svg
 bun.lock
