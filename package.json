@@ -1,26 +1,54 @@
 {
-  "name": "@diagrams/core",
+  "name": "@agent-clis/diagrams",
   "version": "0.1.0",
+  "description": "Generate beautiful architecture diagrams from declarative YAML specs",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "bin": {
-    "diagrams": "./src/cli.ts"
-  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist", "fonts"],
+  "bin": {
+    "diagrams": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "fonts"
+  ],
   "scripts": {
     "dev": "bun run src/cli.ts",
-    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "build": "bun run build:sdk && bun run build:cli:js",
+    "build:sdk": "bun build ./src/index.ts --outdir ./dist --target node && tsc --emitDeclarationOnly",
+    "build:cli:js": "bun build ./src/cli.ts --outdir ./dist --target node --entry-naming cli.js",
     "build:cli": "bun build ./src/cli.ts --compile --outfile diagrams",
+    "build:cli:linux-x64": "bun build ./src/cli.ts --compile --target=bun-linux-x64 --outfile diagrams-linux-x64",
+    "build:cli:linux-arm64": "bun build ./src/cli.ts --compile --target=bun-linux-arm64 --outfile diagrams-linux-arm64",
+    "build:cli:darwin-x64": "bun build ./src/cli.ts --compile --target=bun-darwin-x64 --outfile diagrams-darwin-x64",
+    "build:cli:darwin-arm64": "bun build ./src/cli.ts --compile --target=bun-darwin-arm64 --outfile diagrams-darwin-arm64",
+    "build:cli:windows-x64": "bun build ./src/cli.ts --compile --target=bun-windows-x64 --outfile diagrams-windows-x64.exe",
     "typecheck": "tsc --noEmit",
-    "test": "bun test"
+    "test": "bun test",
+    "prepublishOnly": "bun run build"
   },
+  "keywords": [
+    "diagrams",
+    "architecture",
+    "flowchart",
+    "svg",
+    "png",
+    "cli",
+    "yaml"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daviddrummond95/diagrams.git"
+  },
+  "author": "David Drummond",
+  "homepage": "https://github.com/daviddrummond95/diagrams",
   "dependencies": {
     "@resvg/resvg-js": "^2.6.0",
     "commander": "^14.0.0",

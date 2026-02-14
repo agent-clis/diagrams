@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { Command } from 'commander';
 import { readFile, writeFile } from 'fs/promises';
 import { basename, extname, resolve } from 'path';
@@ -6,6 +6,15 @@ import { parseSpec } from './parse.js';
 import { validate } from './validate.js';
 import { renderDiagram } from './render/index.js';
 import type { OutputFormat, Direction } from './types.js';
+
+function readStdin(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+    process.stdin.on('data', (chunk) => chunks.push(Buffer.from(chunk)));
+    process.stdin.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')));
+    process.stdin.on('error', reject);
+  });
+}
 
 const program = new Command();
 
@@ -30,11 +39,7 @@ program
       // Read input
       let content: string;
       if (input === '-') {
-        const chunks: Buffer[] = [];
-        for await (const chunk of Bun.stdin.stream()) {
-          chunks.push(Buffer.from(chunk));
-        }
-        content = Buffer.concat(chunks).toString('utf-8');
+        content = await readStdin();
       } else {
         content = await readFile(resolve(input), 'utf-8');
       }
@@ -98,11 +103,7 @@ program
     try {
       let content: string;
       if (input === '-') {
-        const chunks: Buffer[] = [];
-        for await (const chunk of Bun.stdin.stream()) {
-          chunks.push(Buffer.from(chunk));
-        }
-        content = Buffer.concat(chunks).toString('utf-8');
+        content = await readStdin();
       } else {
         content = await readFile(resolve(input), 'utf-8');
       }

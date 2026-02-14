@@ -1,4 +1,5 @@
 import { resolve, dirname } from 'path';
+import { readFile } from 'fs/promises';
 import { fileURLToPath } from 'url';
 import * as simpleIcons from 'simple-icons';
 import { cloudIconIndex } from './cloud-icons-index.js';
@@ -67,8 +68,7 @@ async function resolveCloudIcon(key: string): Promise<string> {
   const relPath = cloudIconIndex[key];
   if (!relPath) throw new Error(`Cloud icon not found: ${key}`);
   const fullPath = resolve(iconsRoot, relPath);
-  const file = Bun.file(fullPath);
-  const svg = await file.text();
+  const svg = await readFile(fullPath, 'utf-8');
   return `data:image/svg+xml;base64,${btoa(svg)}`;
 }
 
