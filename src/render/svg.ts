@@ -13,7 +13,10 @@ export async function renderToSvg(
   const svg = await satori(compatibleTree as any, { width, height, fonts: fonts as any });
   if (!metadata?.title && !metadata?.alt) return svg;
   const accessible = `${metadata.title ? `<title>${escapeXml(metadata.title)}</title>` : ''}${metadata.alt ? `<desc>${escapeXml(metadata.alt)}</desc>` : ''}`;
-  return svg.replace(/(<svg\b[^>]*>)/, `$1${accessible}`);
+  // Use a callback so authored dollar amounts such as "$150,000" are not
+  // interpreted as replacement tokens (`$1`) and expanded to the opening SVG
+  // tag, which corrupts the document's title/description metadata.
+  return svg.replace(/(<svg\b[^>]*>)/, (_match, openingTag: string) => `${openingTag}${accessible}`);
 }
 
 function escapeXml(value: string): string {

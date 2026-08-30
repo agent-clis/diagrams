@@ -36,6 +36,19 @@ describe('hosted SVG boundary', () => {
     expect(result.contentHash).toBe(hostedSvgContentHash(spec, { padding: 24, width: 700 }));
   });
 
+  test('keeps authored dollar amounts literal in SVG metadata', async () => {
+    const spec = {
+      ...hostedFlow(),
+      title: '$1 million program',
+      alt: 'A $150,000 request with $1 million in context.',
+    };
+    const result = await renderHostedSvg(spec, { width: 700, padding: 24 });
+
+    expect(result.svg).toContain('<title>$1 million program</title>');
+    expect(result.svg).toContain('<desc>A $150,000 request with $1 million in context.</desc>');
+    expect(result.svg.match(/<svg\b/g)).toHaveLength(1);
+  });
+
   test('does not mutate specs in either public render API', async () => {
     const spec = hostedFlow();
     const before = structuredClone(spec);
